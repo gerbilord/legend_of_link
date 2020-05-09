@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
     void MoveCharacter()
     {
-     
+
         myRigidbody.MovePosition(
             transform.position + change * speed * Time.deltaTime
             );
@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return 1;
         }
-        else if(value < sensitivity * -1.0F)
+        else if (value < sensitivity * -1.0F)
         {
             return -1;
         }
