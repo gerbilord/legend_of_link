@@ -2,8 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerState
+{
+    walk,
+    attack,
+    interact
+}
+
 public class PlayerMovement : MonoBehaviour
 {
+    public PlayerState currentState;
     public float speed;
     private Rigidbody2D myRigidbody;
     private Vector3 change;
@@ -14,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        currentState = PlayerState.walk;
     }
 
     // Update is called once per frame
@@ -23,7 +32,30 @@ public class PlayerMovement : MonoBehaviour
         change.x = GetAxisBinary("Horizontal");
         change.y = GetAxisBinary("Vertical");
 
-        MoveCharacter();
+        if(Input.GetButtonDown("melee attack")  && currentState != PlayerState.attack)
+        {
+            StartCoroutine(AttackCo());
+
+        }
+        else if (currentState == PlayerState.walk)
+        {
+            MoveCharacter();
+        }
+
+    }
+
+    private IEnumerator AttackCo()
+    {
+        currentState = PlayerState.attack;
+        animator.SetBool("attacking", true);
+
+        yield return null; // Wait 1 frame. (Don't want to restart attacking)
+
+        animator.SetBool("attacking", false);
+
+        yield return new WaitForSeconds(.3f); // .33f is length of attack animation
+        currentState = PlayerState.walk;
+  
     }
 
     void UpdateAnimator()
