@@ -7,36 +7,37 @@ public class Knockback : MonoBehaviour
 
     public float thrust;
     public float knockTime;
+    public float damage;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if ( other.gameObject.CompareTag("Enemy") )
+        if (other.gameObject.CompareTag("breakable") && this.gameObject.CompareTag("Player"))
         {
-            Rigidbody2D enemy = other.GetComponent<Rigidbody2D>();
+            other.GetComponent<Pot>().Smash();
+        }
 
-            if(enemy != null)
+        if ( other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Player"))
+        {
+            Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
+
+            if(hit != null)
             {
-                enemy.isKinematic = false;
-                Vector2 difference = enemy.transform.position - this.transform.position;
-
+                Vector2 difference = hit.transform.position - this.transform.position;
                 difference = difference.normalized * thrust;
+                hit.AddForce(difference, ForceMode2D.Impulse);
 
-                enemy.AddForce(difference, ForceMode2D.Impulse);
-
-                StartCoroutine(KnockCo(enemy));
-        
+                if (other.gameObject.CompareTag("Enemy") && other.isTrigger)
+                {
+                    hit.GetComponent<Enemy>().currentState = EnemyState.stagger;
+                    other.GetComponent<Enemy>().Knock(hit, knockTime, damage);
+                }
+                if(other.gameObject.CompareTag("Player"))
+                {
+                    hit.GetComponent<PlayerMovement>().currentState = PlayerState.stagger;
+                    other.GetComponent<PlayerMovement>().Knock(knockTime);
+                }
             }
 
-        }
-    }
-
-    private IEnumerator KnockCo(Rigidbody2D enemy)
-    {
-        if (enemy != null)
-        {
-            yield return new WaitForSeconds(knockTime);
-            enemy.velocity = Vector2.zero;
-            enemy.isKinematic = true;
         }
     }
 }
