@@ -296,9 +296,9 @@ MonoBehaviour:
   signalEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 366518011}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 437491779}
+        m_MethodName: UpdateHearts
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -399,6 +399,8 @@ MonoBehaviour:
   emptyHeart: {fileID: -9053378900703536071, guid: 642da57eea79e4c4bbc07957b9508c36,
     type: 3}
   heartContainers: {fileID: 11400000, guid: 45bd0190d547f684fb9f780a5c9455eb, type: 2}
+  playerCurrentHealth: {fileID: 11400000, guid: de30b02e1c5bc3442bc7365d72be5423,
+    type: 2}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -17727,7 +17729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrust: 8
   knockTime: 0.1
-  damage: 0
+  damage: 1
 --- !u!1 &2050487384
 GameObject:
   m_ObjectHideFlags: 0
